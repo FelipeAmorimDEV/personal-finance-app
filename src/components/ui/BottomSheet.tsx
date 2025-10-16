@@ -86,7 +86,6 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
     }
 
     useEffect(() => {
-      
         if(isDragging) {
             window.document.addEventListener("mousemove", handleMouseMove)
             window.document.addEventListener("mouseup", handleMouseUp)
@@ -96,14 +95,17 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                 window.document.removeEventListener("mouseup", handleMouseUp)
             }
         }
+    }, [isDragging, dragY]);
 
+    // Controla o scroll do body quando modal está aberto
+    useEffect(() => {
         if(isOpen){
             document.body.style.overflow = 'hidden';
             return () => {
                 document.body.style.overflow = 'auto';
             }
         }
-    }, [isDragging, dragY, isOpen]);
+    }, [isOpen]);
 
     return (
         <>
@@ -122,6 +124,26 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                     from { transform: translateY(100%); }
                     to { transform: translateY(0); }
                 }
+                
+                /* Melhorias para scroll no mobile */
+                .modal-content {
+                    -webkit-overflow-scrolling: touch;
+                    overscroll-behavior: contain;
+                }
+                
+                /* Scrollbar customizada para mobile */
+                .modal-content::-webkit-scrollbar {
+                    width: 4px;
+                }
+                
+                .modal-content::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                
+                .modal-content::-webkit-scrollbar-thumb {
+                    background: rgba(148, 163, 184, 0.3);
+                    border-radius: 2px;
+                }
             `}</style>
             <div>
                 {isOpen && (
@@ -136,22 +158,23 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
 
                         {/* Modal */}
                         <div 
-                            className="fixed inset-x-0 bottom-0 z-50 modal-content overflow-y-scroll max-h-full" 
+                            className="fixed inset-x-0 bottom-0 z-50 modal-content" 
                             style={{
                                 transform: `translateY(${dragY}px)`,
                                 transition: isDragging ? 'none' : 'transform 0.3s ease-out',
                                 opacity: isDragging ? Math.max(0.5, 1 - dragY / 300) : 1,
-                                touchAction: 'none' // Previne comportamentos padrão do touch
+                                maxHeight: '90vh', // Altura máxima de 90% da viewport
+                                touchAction: 'pan-y' // Permite scroll vertical no mobile
                             }}
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
                             onMouseDown={handleMouseDown}
                         >
-                        <div className="bg-slate-800 rounded-t-[40px] p-6">
+                        <div className="bg-slate-800 rounded-t-[40px] flex flex-col max-h-full">
                             {/* Área de drag - mais fácil de tocar no mobile */}
                             <div 
-                                className="flex justify-center pb-4 drag-area"
+                                className="flex justify-center py-4 drag-area flex-shrink-0"
                                 style={{ touchAction: 'none' }}
                             >
                                 <div 
@@ -162,7 +185,16 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                                 </div>
                             </div>
 
-                            {children}
+                            {/* Conteúdo com scroll */}
+                            <div 
+                                className="flex-1 overflow-y-auto px-6 pb-6"
+                                style={{ 
+                                    touchAction: 'pan-y',
+                                    WebkitOverflowScrolling: 'touch' // Scroll suave no iOS
+                                }}
+                            >
+                                {children}
+                            </div>
                         </div>
                     </div>
                 </>
