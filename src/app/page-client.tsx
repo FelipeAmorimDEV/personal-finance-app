@@ -172,6 +172,7 @@ export default function PageClient({
                   type="date" 
                   id="date" 
                   name="date"
+                  lang='en-GB'
                   className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
