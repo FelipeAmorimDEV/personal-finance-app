@@ -114,10 +114,12 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                 {isOpen && (
                     <>
                         {/* Backdrop */}
+                      
+
                         <div
-                            className="fixed inset-0 bg-black/40 backdrop-blur-md z-40 modal-backdrop"
-                            onClick={handleClose}
-                        />
+                                className="fixed inset-0 bg-black/40 backdrop-blur-md z-40 modal-backdrop"
+                                onClick={handleClose}
+                            />
 
                         {/* Modal */}
                         <div 
@@ -135,7 +137,9 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                         <div className="bg-slate-800 rounded-t-[40px] p-6">
                             {/* Barrinha */}
                             <div className="flex justify-center pb-4">
-                                <div className="w-12 h-1 bg-slate-600 rounded-full drag-handle cursor-grab active:cursor-grabbing" />
+                                <div className=" w-[100px] h-[12px] bg-red-500 z-[9999] drag-handle cursor-grab active:cursor-grabbing" >
+                                <div className="w-12 h-1 bg-slate-600 rounded-full " style={{transform: `translate(50%,50%)`}}/>
+                                </div>
                             </div>
 
                             {children}
