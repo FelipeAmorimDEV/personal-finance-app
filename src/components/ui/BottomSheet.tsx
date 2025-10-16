@@ -136,7 +136,7 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
 
                         {/* Modal */}
                         <div 
-                            className="fixed inset-x-0 bottom-0 z-50 modal-content overflow-y-auto max-h-full" 
+                            className="fixed inset-x-0 bottom-0 z-50 modal-content overflow-y-scroll max-h-full" 
                             style={{
                                 transform: `translateY(${dragY}px)`,
                                 transition: isDragging ? 'none' : 'transform 0.3s ease-out',
