@@ -13,13 +13,14 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
     const startY = useRef(0);
 
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        // Permite drag em toda a área da barrinha, não apenas no elemento exato
+        // Permite drag apenas na área da barrinha
         const target = e.target as Element;
         if(target.closest(".drag-handle") || target.closest(".drag-area")){
-            e.preventDefault(); // Previne scroll da página
+            e.preventDefault(); // Previne scroll da página apenas na área de drag
             setIsDragging(true);
             startY.current = e.touches[0].clientY;
         }
+        // Se não for na área de drag, permite scroll normal
     }
 
     const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -131,6 +132,11 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                     overscroll-behavior: contain;
                 }
                 
+                /* Força scroll no mobile */
+                .modal-content * {
+                    -webkit-overflow-scrolling: touch;
+                }
+                
                 /* Scrollbar customizada para mobile */
                 .modal-content::-webkit-scrollbar {
                     width: 4px;
@@ -164,17 +170,17 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                                 transition: isDragging ? 'none' : 'transform 0.3s ease-out',
                                 opacity: isDragging ? Math.max(0.5, 1 - dragY / 300) : 1,
                                 maxHeight: '90vh', // Altura máxima de 90% da viewport
-                                touchAction: 'pan-y' // Permite scroll vertical no mobile
+                                touchAction: 'auto' // Permite scroll nativo
                             }}
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
                             onMouseDown={handleMouseDown}
                         >
-                        <div className="bg-slate-800 rounded-t-[40px] flex flex-col max-h-full">
+                        <div className="bg-slate-800 rounded-t-[40px] max-h-full overflow-hidden">
                             {/* Área de drag - mais fácil de tocar no mobile */}
                             <div 
-                                className="flex justify-center py-4 drag-area flex-shrink-0"
+                                className="flex justify-center py-4 drag-area"
                                 style={{ touchAction: 'none' }}
                             >
                                 <div 
@@ -187,10 +193,11 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
 
                             {/* Conteúdo com scroll */}
                             <div 
-                                className="flex-1 overflow-y-auto px-6 pb-6"
+                                className="overflow-y-auto px-6 pb-6"
                                 style={{ 
-                                    touchAction: 'pan-y',
-                                    WebkitOverflowScrolling: 'touch' // Scroll suave no iOS
+                                    maxHeight: 'calc(90vh - 80px)', // Altura máxima menos a área de drag
+                                    WebkitOverflowScrolling: 'touch', // Scroll suave no iOS
+                                    overscrollBehavior: 'contain'
                                 }}
                             >
                                 {children}
