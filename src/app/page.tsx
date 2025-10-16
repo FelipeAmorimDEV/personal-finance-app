@@ -10,7 +10,7 @@ import { fetchCategories } from '@/actions/fetch-categories';
 
 export default async function Home() {
 
-  const { accounts, transactionsByAccount, transactionsByCategory, totalBalance, totalIncome, totalExpense } = await fetchDashboardInfo("a92d1ffa-ff5a-48ad-9f0f-f7ac191aca9a");
+  const { accounts, transactionsByAccount, transactionsByCategory, totalBalance, totalIncome, totalExpense } = await fetchDashboardInfo("b23a7adf-e397-4dfe-9d58-51921c65a68a");
   const categories = await fetchCategories();
 
   console.log('Dashboard info:', { accounts, transactionsByAccount, transactionsByCategory, totalBalance, totalIncome, totalExpense });

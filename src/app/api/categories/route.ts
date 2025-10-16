@@ -1,15 +1,20 @@
 
 import { NextResponse } from "next/server";
-import { fetchCategories } from "@/actions/fetch-categories";
 import { Category } from "@/types/dashboard";
 import { createNewCategory } from "@/actions/create-category.";
 
 export async function GET(request: Request) {
-  
     try {
-        const categories = await fetchCategories();
-        console.log('Categories fetched successfully:', categories);
-        return NextResponse.json(categories, { status: 200 });
+        // Fetch categories from external API
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Categories fetched successfully:', data);
+        return NextResponse.json(data, { status: 200 });
     } catch (error) {
         console.error('Error fetching categories:', error);
         return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });

@@ -1,9 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Finance App
+
+This is a [Next.js](https://nextjs.org) project for personal finance management with a modern mobile-first design.
+
+## Features
+
+- 📊 Dashboard with financial overview
+- 💳 Account management
+- 🏷️ Category management
+- 💰 Transaction tracking
+- 📱 Mobile-responsive design
+- 🎨 Modern UI with animations
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+
+### Environment Setup
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+### Installation
+
+1. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+2. Run the development server:
 ```bash
 npm run dev
 # or
@@ -14,7 +50,17 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### API Endpoints
+
+The app expects a backend API running on `NEXT_PUBLIC_API_URL` with the following endpoints:
+
+- `GET /dashboard?userId={userId}` - Dashboard data
+- `GET /categories` - Categories list
+- `POST /categories` - Create category
+- `POST /transaction-account` - Create account
+- `POST /transactions` - Create transaction
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
