@@ -86,6 +86,7 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
     }
 
     useEffect(() => {
+      
         if(isDragging) {
             window.document.addEventListener("mousemove", handleMouseMove)
             window.document.addEventListener("mouseup", handleMouseUp)
@@ -95,7 +96,14 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                 window.document.removeEventListener("mouseup", handleMouseUp)
             }
         }
-    }, [isDragging, dragY]);
+
+        if(isOpen){
+            document.body.style.overflow = 'hidden';
+            return () => {
+                document.body.style.overflow = 'auto';
+            }
+        }
+    }, [isDragging, dragY, isOpen]);
 
     return (
         <>
@@ -128,7 +136,7 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
 
                         {/* Modal */}
                         <div 
-                            className="fixed inset-x-0 bottom-0 z-50 modal-content" 
+                            className="fixed inset-x-0 bottom-0 z-50 modal-content overflow-y-auto max-h-full" 
                             style={{
                                 transform: `translateY(${dragY}px)`,
                                 transition: isDragging ? 'none' : 'transform 0.3s ease-out',
