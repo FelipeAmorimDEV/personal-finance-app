@@ -37,3 +37,17 @@ body {
   from { transform: translateY(0); }
   to { transform: translateY(100%); }
 }
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Remove o ícone do calendário no iOS */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
