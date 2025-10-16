@@ -8,6 +8,10 @@ import HomeClient from './home-client';
 import PageClient from './page-client';
 import { fetchCategories } from '@/actions/fetch-categories';
 
+export const dynamic = 'force-dynamic'; // Desabilita pre-rendering
+export const revalidate = 0; // Não cacheia
+
+
 export default async function Home() {
 
   const { accounts, transactionsByAccount, transactionsByCategory, totalBalance, totalIncome, totalExpense } = await fetchDashboardInfo("b23a7adf-e397-4dfe-9d58-51921c65a68a");
