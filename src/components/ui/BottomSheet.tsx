@@ -13,7 +13,10 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
     const startY = useRef(0);
 
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-        if((e.target as Element).closest(".drag-handle")){
+        // Permite drag em toda a área da barrinha, não apenas no elemento exato
+        const target = e.target as Element;
+        if(target.closest(".drag-handle") || target.closest(".drag-area")){
+            e.preventDefault(); // Previne scroll da página
             setIsDragging(true);
             startY.current = e.touches[0].clientY;
         }
@@ -21,6 +24,8 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
 
     const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
         if (!isDragging) return;
+        
+        e.preventDefault(); // Previne scroll da página durante o drag
 
         const currentY = e.touches[0].clientY;
         const diffY = currentY - startY.current;
@@ -127,7 +132,8 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                             style={{
                                 transform: `translateY(${dragY}px)`,
                                 transition: isDragging ? 'none' : 'transform 0.3s ease-out',
-                                opacity: isDragging ? Math.max(0.5, 1 - dragY / 300) : 1                    
+                                opacity: isDragging ? Math.max(0.5, 1 - dragY / 300) : 1,
+                                touchAction: 'none' // Previne comportamentos padrão do touch
                             }}
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
@@ -135,10 +141,16 @@ export default function BottomSheet({ children, isOpen, setIsOpen }: BottomSheet
                             onMouseDown={handleMouseDown}
                         >
                         <div className="bg-slate-800 rounded-t-[40px] p-6">
-                            {/* Barrinha */}
-                            <div className="flex justify-center pb-4">
-                                <div className=" w-[100px] h-[12px] bg-red-500 z-[9999] drag-handle cursor-grab active:cursor-grabbing" >
-                                <div className="w-12 h-1 bg-slate-600 rounded-full " style={{transform: `translate(50%,50%)`}}/>
+                            {/* Área de drag - mais fácil de tocar no mobile */}
+                            <div 
+                                className="flex justify-center pb-4 drag-area"
+                                style={{ touchAction: 'none' }}
+                            >
+                                <div 
+                                    className="w-20 h-8 flex items-center justify-center drag-handle cursor-grab active:cursor-grabbing"
+                                    style={{ touchAction: 'none' }}
+                                >
+                                    <div className="w-12 h-1 bg-slate-600 rounded-full" />
                                 </div>
                             </div>
 
