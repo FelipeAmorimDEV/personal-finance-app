@@ -1,6 +1,7 @@
 
 import { NextResponse } from "next/server";
 import { DashboardInfo } from '@/types/dashboard';
+import { fetchDashboardInfo } from "@/actions/fetch-dashboard-info";
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -12,8 +13,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
-    const dashboardInfo = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard?userId=${userId}`);
-    const data: DashboardInfo = await dashboardInfo.json();
-    console.log('Dashboard info fetched successfully:', data);
-    return NextResponse.json(data);
+    const dashboardInfo = await fetchDashboardInfo(userId);
+    console.log('Dashboard info fetched successfully:', dashboardInfo);
+    return NextResponse.json(dashboardInfo);
 }

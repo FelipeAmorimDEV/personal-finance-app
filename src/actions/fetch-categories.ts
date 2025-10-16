@@ -6,11 +6,9 @@ interface FetchCategoriesResponse {
 
 export async function fetchCategories(): Promise<FetchCategoriesResponse> {
     // Get the base URL for server-side requests
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL
     
-    const response = await fetch(`${baseUrl}/api/categories`);
+    const response = await fetch(`${baseUrl}/categories`);
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
