@@ -106,10 +106,16 @@ export default function LoginPage() {
           </form>
 
           {/* Links extras */}
-          <div className="mt-6 text-center">
-            <a href="#" className="text-sm text-slate-400 hover:text-white transition-colors">
+          <div className="mt-6 text-center space-y-3">
+            <a href="#" className="text-sm text-slate-400 hover:text-white transition-colors block">
               Esqueceu sua senha?
             </a>
+            <p className="text-sm text-slate-400">
+              Não tem uma conta?{' '}
+              <a href="/register" className="text-[#4A69E0] hover:text-blue-400 transition-colors font-medium">
+                Criar conta
+              </a>
+            </p>
           </div>
         </div>
       </div>

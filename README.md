@@ -60,6 +60,7 @@ bun dev
 The app expects a backend API running on `NEXT_PUBLIC_API_URL` with the following endpoints:
 
 #### Authentication
+- `POST /accounts` - Register new user (returns success message)
 - `POST /sessions` - Login (returns `access_token`)
 
 #### Dashboard & Data (requires authentication)
@@ -81,20 +82,32 @@ The app uses JWT token-based authentication:
 5. Protected routes are handled by Next.js middleware
 
 To use the app:
-1. Navigate to `http://localhost:3000/login`
-2. Enter your credentials
+1. Create an account at `http://localhost:3000/register` or
+2. Login at `http://localhost:3000/login` with existing credentials
 3. Access is granted to the dashboard
 
 ### Pages
 
-#### Dashboard (`/`)
+#### Register (`/register`) - Public
+- Create new user account
+- Form validation with real-time feedback
+- Password strength validation
+- Redirect to login after successful registration
+
+#### Login (`/login`) - Public
+- User authentication
+- Email and password fields
+- Automatic redirect to dashboard after login
+- Link to registration page
+
+#### Dashboard (`/`) - Protected
 - Overview of financial summary (total balance, income, expenses)
 - Account cards with balances
 - Recent transactions
 - Expenses by category
 - Quick access to add transactions, categories, and accounts
 
-#### Transactions (`/transactions`)
+#### Transactions (`/transactions`) - Protected
 - Complete list of all transactions
 - Filter by:
   - Month and Year
