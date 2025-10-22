@@ -18,6 +18,9 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        // Extrai apenas os campos necessários
+        const { name, balance, color, icon } = account;
+
         // Faz a requisição diretamente do API route
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction-account`, {
             method: 'POST',
@@ -25,7 +28,7 @@ export async function POST(request: Request) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify(account)
+            body: JSON.stringify({ name, balance, color, icon })
         });
 
         if (!response.ok) {

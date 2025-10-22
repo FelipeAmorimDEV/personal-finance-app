@@ -32,6 +32,9 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        // Extrai apenas os campos necessários
+        const { name, color, icon, description } = category;
+
         // Faz a requisição diretamente do API route
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
             method: 'POST',
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify(category)
+            body: JSON.stringify({ name, color, icon, description })
         });
 
         if (!response.ok) {
