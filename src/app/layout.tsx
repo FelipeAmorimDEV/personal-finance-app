@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ModalProvider } from "@/contexts/ModalContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import LayoutClient from "./layout-client";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +32,24 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToastContainer />
-        <ModalProvider>
-          {children}
-          <LayoutClient />
-        </ModalProvider>
+        <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+        <AuthProvider>
+          <ModalProvider>
+            {children}
+            <LayoutClient />
+          </ModalProvider>
+        </AuthProvider>
       </body>
     </html>
   );

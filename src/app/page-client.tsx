@@ -19,7 +19,7 @@ export default function PageClient({
   categories
 }: PageClientProps) {
   const { isModalOpen, setIsModalOpen } = useModal();
-  const [transactionType, setTransactionType] = useState<'income' | 'expense'>('income');
+  const [transactionType, setTransactionType] = useState<'income' | 'expense' | ''>('');
   const [accountId, setAccountId] = useState<string>('');
   const [categoryId, setCategoryId] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -78,7 +78,7 @@ export default function PageClient({
                   value={transactionType}
                   onChange={(e) => setTransactionType(e.target.value as 'income' | 'expense')}
                 >
-                  <option value="">Selecione o tipo da transação</option>
+                  <option value="" disabled>Selecione o tipo da transação</option>
                   <option value="income">Receita</option>
                   <option value="expense">Despesa</option>
                 </select>
@@ -103,7 +103,7 @@ export default function PageClient({
                   value={accountId}
                   onChange={(e) => setAccountId(e.target.value)}
                 > 
-                  <option value="">Selecione a conta</option>
+                  <option value="" disabled>Selecione a conta</option>
                   {accounts.map((account) => (
                     <option key={account.id} value={account.id}>
                       {account.name}
@@ -131,7 +131,7 @@ export default function PageClient({
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
                 >   
-                  <option value="">Selecione a categoria</option>
+                  <option value="" disabled>Selecione a categoria</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}

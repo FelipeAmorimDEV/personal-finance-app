@@ -1,4 +1,5 @@
 import { Category } from '@/types/dashboard';
+import { getAuthHeaders } from '@/lib/api';
 
 interface FetchCategoriesResponse {
     categories: Category[];
@@ -6,9 +7,12 @@ interface FetchCategoriesResponse {
 
 export async function fetchCategories(): Promise<FetchCategoriesResponse> {
     // Get the base URL for server-side requests
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    const headers = await getAuthHeaders();
     
-    const response = await fetch(`${baseUrl}/categories`);
+    const response = await fetch(`${baseUrl}/categories`, {
+        headers
+    });
     
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
