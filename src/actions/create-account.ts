@@ -1,3 +1,4 @@
+import { getAuthHeaders } from '@/lib/api';
 import { Account, Category } from '@/types/dashboard';
 
 export async function createNewAccount(account: Account): Promise<Account> {
@@ -5,19 +6,13 @@ export async function createNewAccount(account: Account): Promise<Account> {
         console.log('Creating new account:', account);
 
         const { name, balance, color, icon } = account;
-
+        const headers = await getAuthHeaders();
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction-account`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name,
-                color, 
-                icon,
-                balance
-            })
+            headers,
+            body: JSON.stringify({ name, color, icon, balance })
         });
+
 
         if (!response.ok) {
                 throw new Error('Failed to create new account');

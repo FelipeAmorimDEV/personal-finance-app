@@ -1,23 +1,15 @@
 import { Transaction } from '@/types/dashboard';
-
+import { getAuthHeaders } from '@/lib/api';
 export async function createNewTransaction(transaction: Transaction): Promise<Transaction> {
     try {
         console.log('Creating new transaction:', transaction);
 
         const { accountId, categoryId, description, date, type, amount } = transaction;
+        const headers = await getAuthHeaders();
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                accountId,
-                categoryId,
-                description,
-                date,
-                amount,
-                type
-            })
+            headers,
+            body: JSON.stringify({ accountId, categoryId, description, date, amount, type })
         });
 
         if (!response.ok) {
