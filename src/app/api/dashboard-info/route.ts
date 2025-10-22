@@ -13,7 +13,7 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
-    const dashboardInfo = await fetchDashboardInfo(userId);
+    const dashboardInfo = await fetchDashboardInfo();
     console.log('Dashboard info fetched successfully:', dashboardInfo);
     return NextResponse.json(dashboardInfo);
 }
