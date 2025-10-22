@@ -9,7 +9,10 @@ export async function createNewAccount(account: Account): Promise<Account> {
         const headers = await getAuthHeaders();
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction-account`, {
             method: 'POST',
-            headers,
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ name, color, icon, balance })
         });
 

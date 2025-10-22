@@ -8,7 +8,10 @@ export async function createNewCategory(category: Category): Promise<Category> {
         const { name, color, icon, description } = category;
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
             method: 'POST',
-            headers,
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ name, color, icon, description })
         });
 

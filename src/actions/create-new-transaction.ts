@@ -8,7 +8,10 @@ export async function createNewTransaction(transaction: Transaction): Promise<Tr
         const headers = await getAuthHeaders();
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
             method: 'POST',
-            headers,
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ accountId, categoryId, description, date, amount, type })
         });
 
