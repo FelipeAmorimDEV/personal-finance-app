@@ -27,8 +27,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Salva no cookie também para o middleware
       document.cookie = `access_token=${storedToken}; path=/; max-age=86400; SameSite=Lax`;
     } else {
-      // Se não há token e não está na página de login, redireciona
-      if (pathname !== '/login') {
+      // Se não há token e não está em página pública, redireciona
+      const publicPages = ['/login', '/register', '/force-logout'];
+      if (!publicPages.includes(pathname)) {
         router.push('/login');
       }
     }
