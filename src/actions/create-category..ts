@@ -17,7 +17,9 @@ export async function createNewCategory(category: Category): Promise<Category> {
 
 
         if (!response.ok) {
-            throw new Error('Failed to create new category');
+            const errorData = await response.text();
+            console.error('Failed to create category. Status:', response.status, 'Error:', errorData);
+            throw new Error(`Failed to create new category: ${response.status} - ${errorData}`);
         }
 
         const data: Category = await response.json();
@@ -25,6 +27,6 @@ export async function createNewCategory(category: Category): Promise<Category> {
         return data;
     } catch (error) {
         console.error('Error creating new category:', error);
-        throw new Error('Failed to create new category');
+        throw error;
     }
 }

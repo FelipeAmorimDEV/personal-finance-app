@@ -18,7 +18,9 @@ export async function createNewAccount(account: Account): Promise<Account> {
 
 
         if (!response.ok) {
-                throw new Error('Failed to create new account');
+            const errorData = await response.text();
+            console.error('Failed to create account. Status:', response.status, 'Error:', errorData);
+            throw new Error(`Failed to create new account: ${response.status} - ${errorData}`);
         }
 
         const data: Account = await response.json();
@@ -26,6 +28,6 @@ export async function createNewAccount(account: Account): Promise<Account> {
         return data;
     } catch (error) {
         console.error('Error creating new account:', error);
-        throw new Error('Failed to create new account');
+        throw error;
     }
 }

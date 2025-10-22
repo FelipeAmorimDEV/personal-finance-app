@@ -16,7 +16,9 @@ export async function createNewTransaction(transaction: Transaction): Promise<Tr
         });
 
         if (!response.ok) {
-            throw new Error('Failed to create new transaction');
+            const errorData = await response.text();
+            console.error('Failed to create transaction. Status:', response.status, 'Error:', errorData);
+            throw new Error(`Failed to create new transaction: ${response.status} - ${errorData}`);
         }
 
         const data: Transaction = await response.json();
@@ -24,6 +26,6 @@ export async function createNewTransaction(transaction: Transaction): Promise<Tr
         return data;
     } catch (error) {
         console.error('Error creating new transaction:', error);
-        throw new Error('Failed to create new transaction');
+        throw error;
     }
 }
