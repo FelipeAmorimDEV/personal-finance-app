@@ -21,11 +21,9 @@ export default function CreateCategoryModal() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          category: {
-            name,
-            color,
-            icon
-          }
+          name,
+          color,
+          icon
         })
       });
       

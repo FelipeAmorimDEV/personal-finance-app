@@ -32,15 +32,16 @@ export default function PageClient({
     try {
       const newTransaction = await fetch  ('/api/transactions', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          transaction: {
-            type: transactionType,
-            accountId: accountId,
-            categoryId: categoryId,
-            description: description,
-            date: date,
-             amount: amount ? parseFloat(amount) : 0
-          }
+          type: transactionType,
+          accountId: accountId,
+          categoryId: categoryId,
+          description: description,
+          date: date,
+          amount: amount ? parseFloat(amount) : 0
         })
       });
       

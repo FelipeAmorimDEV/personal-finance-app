@@ -19,10 +19,7 @@ import { cookies } from "next/headers";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        console.log('API Route - Received body:', body);
-        
-        const category = body.category as Category;
-        console.log('API Route - Category to create:', category);
+        console.log('API Route - Received body:', JSON.stringify(body, null, 2));
 
         // Pega o token do cookie
         const cookieStore = await cookies();
@@ -32,8 +29,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        // Extrai apenas os campos necessários
-        const { name, color, icon, description } = category;
+        // Usa o body direto como payload (já vem com name, color, icon)
+        const payload = { 
+            name: body.name, 
+            color: body.color, 
+            icon: body.icon, 
+            description: body.description 
+        };
+        console.log('API Route - Payload to send:', JSON.stringify(payload, null, 2));
 
         // Faz a requisição diretamente do API route
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
@@ -42,7 +45,8 @@ export async function POST(request: Request) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ name, color, icon, description })
+            body: JSON.stringify(payload),
+            cache: 'no-store'
         });
 
         if (!response.ok) {

@@ -6,9 +6,8 @@ import { cookies } from "next/headers";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const transaction = body.transaction as Transaction;
 
-    console.log('Transaction to create:', transaction);
+    console.log('Transaction to create:', body);
 
     // Pega o token do cookie
     const cookieStore = await cookies();
@@ -18,8 +17,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Extrai apenas os campos necessários
-    const { accountId, categoryId, description, date, type, amount } = transaction;
+    // Usa o body direto (já vem com os campos necessários)
+    const { accountId, categoryId, description, date, type, amount } = body;
 
     // Faz a requisição diretamente do API route
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
@@ -28,7 +27,8 @@ export async function POST(request: Request) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ accountId, categoryId, description, date, type, amount })
+        body: JSON.stringify({ accountId, categoryId, description, date, type, amount }),
+        cache: 'no-store'
     });
 
     if (!response.ok) {

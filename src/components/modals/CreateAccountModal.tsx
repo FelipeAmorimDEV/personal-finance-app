@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 export default function CreateAccountModal() {
   const { isAccountModalOpen, setIsAccountModalOpen } = useModal();
   const [name, setName] = useState<string>('');
-  const [type, setType] = useState<string>('checking');
   const [balance, setBalance] = useState<string>('');
   const [color, setColor] = useState<string>('#4A69E0');
   const [icon, setIcon] = useState<string>('🏦');
@@ -17,20 +16,23 @@ export default function CreateAccountModal() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      const accountData = {
+        name,
+        balance: balance ? parseFloat(balance) : 0,
+        color,
+        icon
+      };
+      
+      console.log('=== MODAL - Sending account data ===');
+      console.log('Modal data:', accountData);
+      console.log('Modal data stringified:', JSON.stringify(accountData));
+      
       const response = await fetch('/api/accounts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          account: {
-            name,
-            type,
-            balance: balance ? parseFloat(balance) : 0,
-            color,
-            icon
-          }
-        })
+        body: JSON.stringify(accountData)
       });
       
       if (!response.ok) {
@@ -41,7 +43,6 @@ export default function CreateAccountModal() {
       toast.success('Conta criada com sucesso');
       setIsAccountModalOpen(false);
       setName('');
-      setType('checking');
       setBalance('');
       setColor('#4A69E0');
       setIcon('🏦');
@@ -80,33 +81,6 @@ export default function CreateAccountModal() {
               onChange={(e) => setName(e.target.value)}
               required
             />
-          </div>
-
-          {/* Tipo da conta */}
-          <div className="space-y-2">
-            <label htmlFor="accountType" className="text-white text-sm font-medium">
-              Tipo da conta
-            </label>
-            <div className="relative">
-              <select 
-                id="accountType" 
-                name="accountType"
-                className="w-full bg-slate-700 text-white px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-              >
-                <option value="checking">Conta Corrente</option>
-                <option value="savings">Conta Poupança</option>
-                <option value="investment">Investimentos</option>
-                <option value="credit">Cartão de Crédito</option>
-                <option value="cash">Dinheiro</option>
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
           </div>
 
           {/* Saldo inicial */}
