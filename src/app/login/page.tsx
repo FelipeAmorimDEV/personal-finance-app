@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 
 export default function LoginPage() {
@@ -8,6 +8,21 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Preenche os campos com parâmetros da URL
+  useEffect(() => {
+    const urlEmail = searchParams.get('email');
+    const urlPassword = searchParams.get('password');
+    
+    if (urlEmail) {
+      setEmail(decodeURIComponent(urlEmail));
+    }
+    
+    if (urlPassword) {
+      setPassword(decodeURIComponent(urlPassword));
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
